@@ -8,7 +8,7 @@ Very small JSON parser written in C.
 - Parse JSON from string
 - Easy browsing API
 - Unescape string values (except Unicode)
-- Comments // line and /* block */ skipped
+- Comments // line and /\* block \*/ skipped
 
 ##Limitations
 
@@ -21,7 +21,7 @@ JSON code:
 
     {
       "some-int": 195,
-      "array": [ 3, 5.1, -7, \"nine\", /*11*/ ],
+      "array": [ 3, 5.1, -7, "nine", /*11*/ ],
       "some-bool": true,
       "some-dbl": -1e-4,
       "some-null": null,
