@@ -1,0 +1,19 @@
+    {
+      "some-int": 195,
+      "array1": [ 3, 5.1, -7, "nine", /*11*/, true, false, "last" ],
+      "array2":["/*","*/"],
+      "some-bool": true,
+      "other-bool": false,
+      "some-dbl": -1e-4,
+      "some-null": null,
+      "hello": "world!",
+      "str1": "//",
+      "str2": "\\",
+      "str3": "text /*text*/ text",
+      "str4": "\\text\\",
+      "str5": "\?text\?",
+      "str\t6\\": "text\ntext\ttext",
+      "str7": "text\u1234text\u5678",
+      //"other": "/OTHER/",
+      "obj": {"KEY":"VAL", "obj":{"KEY":"VAL"}}
+    }

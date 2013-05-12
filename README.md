@@ -5,15 +5,16 @@ Very small JSON parser written in C.
 
 ##Features
 
-- Parse JSON from string
-- Easy browsing API
+- Parse JSON from null-terminated string
+- Easy to use tree traversal API
 - Unescape string values (except Unicode)
 - Comments // line and /\* block \*/ skipped
+- Test suite included
 
 ##Limitations
 
 - No Unicode support (\uXXXX escape sequences remain untouched)
-- Might accept invalid JSON (eg., extra commas, comments), don't use for validation
+- Might accept invalid JSON (eg., extra or missing commas, comments), not suitable for validation
 
 ##Example
 

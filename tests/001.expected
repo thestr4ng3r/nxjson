@@ -1,0 +1,35 @@
+{
+  some-int:195
+  array1:[
+    3
+    5.100000e+00
+    -7
+    "nine"
+    T
+    F
+    "last"
+  ]
+  array2:[
+    "/*"
+    "*/"
+  ]
+  some-bool:T
+  other-bool:F
+  some-dbl:-1.000000e-04
+  some-null:null
+  hello:"world!"
+  str1:"//"
+  str2:"\"
+  str3:"text /*text*/ text"
+  str4:"\text\"
+  str5:"\?text\?"
+  str	6\:"text
+text	text"
+  str7:"text\u1234text\u5678"
+  obj:{
+    KEY:"VAL"
+    obj:{
+      KEY:"VAL"
+    }
+  }
+}

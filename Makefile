@@ -1,8 +1,8 @@
 
 all: nxjson
 
-nxjson: nxjson.c
-	gcc -O0 -g -DDEBUG ${CFLAGS} nxjson.c -o nxjson
+nxjson: nxjson.c test.c nxjson.h
+	gcc -O0 -g -Wall ${CFLAGS} nxjson.c test.c -o nxjson
 
 clean:
 	rm nxjson

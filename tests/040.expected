@@ -1,0 +1,4 @@
+[
+  "
+ foo / bar \\uffff	"\ and you can't escape thi\s"
+]
