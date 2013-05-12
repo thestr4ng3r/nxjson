@@ -305,10 +305,10 @@ const nx_json* nx_json_parse(char* text) {
 }
 
 const nx_json* nx_json_get(const nx_json* json, const char* key) {
-  if (!json) return &dummy; // never return null
+  if (!json || !key) return &dummy; // never return null
   nx_json* js;
   for (js=json->child; js; js=js->next) {
-    if (!strcmp(js->key, key)) return js;
+    if (js->key && !strcmp(js->key, key)) return js;
   }
   return &dummy; // never return null
 }
