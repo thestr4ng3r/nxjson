@@ -121,6 +121,23 @@ static char* unescape_string(char* s, char** end) {
   return 0;
 }
 
+static char* skip_block_comment(char* p) {
+  // assume p[-2]=='/' && p[-1]=='*'
+  char* ps=p-2;
+  if (!*p) {
+    NX_JSON_REPORT_ERROR("endless comment", ps);
+    return 0;
+  }
+  REPEAT:
+  p=strchr(p+1, '/');
+  if (!p) {
+    NX_JSON_REPORT_ERROR("endless comment", ps);
+    return 0;
+  }
+  if (p[-1]!='*') goto REPEAT;
+  return p+1;
+}
+
 static char* parse_key(const char** key, char* p) {
   // on '}' return with *p=='}'
   char c;
@@ -150,17 +167,8 @@ static char* parse_key(const char** key, char* p) {
         p++;
       }
       else if (*p=='*') { // block comment
-        char* ps=p-1;
-        REPEAT:
-        p=strchr(p+1, '/');
-        if (!p) {
-          NX_JSON_REPORT_ERROR("endless comment", ps);
-          return 0; // error
-        }
-        if (p[-1]!='*') {
-          goto REPEAT;
-        }
-        p++;
+        p=skip_block_comment(p+1);
+        if (!p) return 0;
       }
       else {
         NX_JSON_REPORT_ERROR("unexpected chars", p-1);
@@ -271,18 +279,8 @@ static char* parse_value(nx_json* parent, const char* key, char* p) {
           p++;
         }
         else if (p[1]=='*') { // block comment
-          char* ps=p;
-          p++;
-          REPEAT:
-          p=strchr(p+1, '/');
-          if (!p) {
-            NX_JSON_REPORT_ERROR("endless comment", ps);
-            return 0; // error
-          }
-          if (p[-1]!='*') {
-            goto REPEAT;
-          }
-          p++;
+          p=skip_block_comment(p+2);
+          if (!p) return 0;
         }
         else {
           NX_JSON_REPORT_ERROR("unexpected chars", p);
