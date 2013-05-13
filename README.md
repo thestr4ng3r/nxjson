@@ -7,7 +7,7 @@ Very small JSON parser written in C.
 
 - Parses JSON from null-terminated string
 - Easy to use tree traversal API
-- Allows // line and /\* block \*/ comments (except before colon :)
+- Allows // line and /\* block \*/ comments (except before colon ':')
 - Operates on single-byte or multi-byte characters (like UTF-8), not wide characters
 - Unescapes string values (including Unicode codepoints & surrogates)
 - Can use custom Unicode encoder, UTF-8 encoder built in
@@ -80,14 +80,14 @@ This is shortcut for `nx_json_parse(text, nx_json_unicode_to_utf8)` where `nx_js
 
     void nx_json_free(const nx_json* js);
 
-Free resources (`nx_json` nodes) allocated by `nx_json_parse()`.
+Frees resources (`nx_json` nodes) allocated by `nx_json_parse()`.
 
 
 #### Traversal
 
     const nx_json* nx_json_get(const nx_json* json, const char* key);
 
-Get object's property by key.
+Gets object's property by key.
 
 If `json` points to `OBJECT` node returns first the object's property identified by key `key`.
 
@@ -96,7 +96,7 @@ If there is no such property returns *dummy* node of type `NX_JSON_NULL`. Never 
 
     const nx_json* nx_json_item(const nx_json* json, int idx);
 
-Get array's item by its index.
+Gets array's item by its index.
 
 If `json` points to `ARRAY` node returns array's element identified by index `idx`.
 
