@@ -47,7 +47,12 @@ typedef struct nx_json {
   struct nx_json* last_child;
 } nx_json;
 
-const nx_json* nx_json_parse(char* text);
+typedef int (*nx_json_unicode_encoder)(unsigned int codepoint, char* p, char** endp);
+
+extern nx_json_unicode_encoder nx_json_unicode_to_utf8;
+
+const nx_json* nx_json_parse(char* text, nx_json_unicode_encoder encoder);
+const nx_json* nx_json_parse_utf8(char* text);
 void nx_json_free(const nx_json* js);
 const nx_json* nx_json_get(const nx_json* json, const char* key); // get object's property by key
 const nx_json* nx_json_item(const nx_json* json, int idx); // get array element by index

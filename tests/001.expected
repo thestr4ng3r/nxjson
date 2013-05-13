@@ -25,7 +25,7 @@
   str5:"\?text\?"
   str	6\:"text
 text	text"
-  str7:"text\u1234text\u5678"
+  str7:"textሴtext噸"
   obj:{
     KEY:"VAL"
     obj:{

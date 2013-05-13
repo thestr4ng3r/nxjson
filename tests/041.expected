@@ -1,6 +1,6 @@
 [
   "
- foo / bar \\uffff	"\"
+ foo / bar \￿	"\"
   ""and this string has an escape at the beginning"
   "and this string has no escapes"
 ]

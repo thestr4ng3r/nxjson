@@ -1,4 +1,4 @@
 [
   "
- foo / bar \\uffff	"\ and you can't escape thi\s"
+ foo / bar \￿	"\ and you can't escape thi\s"
 ]

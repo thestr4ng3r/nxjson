@@ -5,18 +5,21 @@ Very small JSON parser written in C.
 
 ##Features
 
-- Parse JSON from null-terminated string
+- Parses JSON from null-terminated string
 - Easy to use tree traversal API
-- Unescape string values (except Unicode)
-- Comments // line and /\* block \*/ skipped
+- Allows // line and /\* block \*/ comments (except before colon :)
+- Operates on single-byte or multi-byte characters (like UTF-8), not wide characters
+- Unescapes string values (including Unicode codepoints & surrogates)
+- Can use custom Unicode encoder, UTF-8 encoder built in
+- Can use custom memory allocator
+- Can use custom macro to print errors
 - Test suite included
 
-##Limitations
+## Limitations
 
-- No Unicode support (\uXXXX escape sequences remain untouched)
-- Not validating parser; might accept invalid JSON (eg., extra or missing commas, comments, octal or hex numeric values, etc.)
+- Non-validating parser; might accept invalid JSON (eg., extra or missing commas, comments, octal or hex numeric values, etc.)
 
-##API
+## API
 
 Parsed JSON tree consists of nodes. Each node has type:
 
@@ -45,27 +48,44 @@ The node itself:
     } nx_json;
 
 
-Parse function:
+#### Parsing
 
-      const nx_json* nx_json_parse(char* text);
+    const nx_json* nx_json_parse(char* text, nx_json_unicode_encoder encoder);
 
-Parse null-terminated string `text` into `nx_json` tree structure. The string is **modified in place**.
+Parses null-terminated string `text` into `nx_json` tree structure. The string is **modified in place**.
 
 Parsing ends right after retrieving first valid JSON value. Remainder of the text is not analysed.
 
-Returns `NULL` on syntax error. Error details are printed out using re-definable macro `NX_JSON_REPORT_ERROR(msg,ptr)`.
+Returns `NULL` on syntax error. Error details are printed out using user-redefinable macro `NX_JSON_REPORT_ERROR(msg, ptr)`.
 
-Inside parse function `nx_json` nodes get allocated using re-definable macro `NX_JSON_CALLOC()` and freed by `NX_JSON_FREE(json)`.
+Inside parse function `nx_json` nodes get allocated using user-redefinable macro `NX_JSON_CALLOC()` and freed by `NX_JSON_FREE(json)`.
 
 All `text_value` pointers refer to the content of original `text` string, which is modified in place to unescape and null-terminate JSON string literals.
 
+`encoder` is a function defined as follows:
 
-      void nx_json_free(const nx_json* js);
+    int unicode_to_my_encoding(unsigned int codepoint, char* p, char** endp) { ... }
+
+Encoder takes Unicode codepoint and writes corresponding encoded value into buffer pointed by `p`. It should store pointer to the end of encoded value into `*endp`. The function should return 1 on success and 0 on error. Number of bytes written must not exceed 6.
+
+NXJSON includes sample encoder `nx_json_unicode_to_utf8`, which converts all `\uXXXX` escapes into UTF-8 sequences.
+
+In case `encoder` parameter is `NULL` all unicode escape sequences (`\uXXXX`) are ignored (remain untouched).
+
+
+    const nx_json* nx_json_parse_utf8(char* text);
+
+This is shortcut for `nx_json_parse(text, nx_json_unicode_to_utf8)` where `nx_json_unicode_to_utf8` is unicode to UTF-8 encoder provided by NXJSON.
+
+
+    void nx_json_free(const nx_json* js);
 
 Free resources (`nx_json` nodes) allocated by `nx_json_parse()`.
 
 
-      const nx_json* nx_json_get(const nx_json* json, const char* key);
+#### Traversal
+
+    const nx_json* nx_json_get(const nx_json* json, const char* key);
 
 Get object's property by key.
 
@@ -74,7 +94,7 @@ If `json` points to `OBJECT` node returns first the object's property identified
 If there is no such property returns *dummy* node of type `NX_JSON_NULL`. Never returns literal `NULL`.
 
 
-      const nx_json* nx_json_item(const nx_json* json, int idx);
+    const nx_json* nx_json_item(const nx_json* json, int idx);
 
 Get array's item by its index.
 
@@ -85,7 +105,7 @@ If `json` points to `OBJECT` node returns object's property identified by index 
 If there is no such item/property returns *dummy* node of type `NX_JSON_NULL`. Never returns literal `NULL`.
 
 
-##Usage Example
+## Usage Example
 
 JSON code:
 
@@ -102,11 +122,11 @@ JSON code:
 
 C API:
 
-    const nx_json* json=nx_json_parse(code);
+    const nx_json* json=nx_json_parse(code, 0);
     if (json) {
       printf("some-int=%ld\n", nx_json_get(json, "some-int")->int_value);
       printf("some-dbl=%lf\n", nx_json_get(json, "some-dbl")->dbl_value);
-      printf("some-bool=%ld\n", nx_json_get(json, "some-bool")->int_value);
+      printf("some-bool=%s\n", nx_json_get(json, "some-bool")->int_value? "true":"false");
       printf("some-null=%s\n", nx_json_get(json, "some-null")->text_value);
       printf("hello=%s\n", nx_json_get(json, "hello")->text_value);
       printf("other=%s\n", nx_json_get(json, "other")->text_value);

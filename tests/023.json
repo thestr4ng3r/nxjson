@@ -1,1 +1,1 @@
-"\u004d\u0430\u4e8c\ud800\udf02"
+/* This string contains Unicode surrogate 𐌂 both in UTF-8 and escaped */ "𐌂\u004d\u0430\u4e8c\ud800\udf02"

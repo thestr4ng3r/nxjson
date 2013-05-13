@@ -1,0 +1,1 @@
+/* invalid unicode surrogate */ "\ud800"
