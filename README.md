@@ -8,7 +8,7 @@ Very small JSON parser written in C.
 - Parses JSON from null-terminated string
 - Easy to use tree traversal API
 - Allows // line and /\* block \*/ comments (except before colon ':')
-- Operates on single-byte or multi-byte characters (like UTF-8), not wide characters
+- Operates on single-byte or multi-byte characters (like UTF-8), but not on wide characters
 - Unescapes string values (including Unicode codepoints & surrogates)
 - Can use custom Unicode encoder, UTF-8 encoder built in
 - Can use custom memory allocator
