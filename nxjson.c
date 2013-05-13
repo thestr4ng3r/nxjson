@@ -151,14 +151,14 @@ static char* parse_key(const char** key, char* p) {
       }
       else if (*p=='*') { // block comment
         char* ps=p-1;
-        REPEAT2:
+        REPEAT:
         p=strchr(p+1, '/');
         if (!p) {
           NX_JSON_REPORT_ERROR("endless comment", ps);
           return 0; // error
         }
         if (p[-1]!='*') {
-          goto REPEAT2;
+          goto REPEAT;
         }
         p++;
       }
@@ -272,14 +272,15 @@ static char* parse_value(nx_json* parent, const char* key, char* p) {
         }
         else if (p[1]=='*') { // block comment
           char* ps=p;
-          REPEAT2:
-          p=strchr(p+2, '/');
+          p++;
+          REPEAT:
+          p=strchr(p+1, '/');
           if (!p) {
             NX_JSON_REPORT_ERROR("endless comment", ps);
             return 0; // error
           }
           if (p[-1]!='*') {
-            goto REPEAT2;
+            goto REPEAT;
           }
           p++;
         }
