@@ -14,7 +14,7 @@ Very small JSON parser written in C.
 ##Limitations
 
 - No Unicode support (\uXXXX escape sequences remain untouched)
-- Might accept invalid JSON (eg., extra or missing commas, comments), not suitable for validation
+- Not validating parser; might accept invalid JSON (eg., extra or missing commas, comments, octal or hex numeric values, etc.)
 
 ##API
 
