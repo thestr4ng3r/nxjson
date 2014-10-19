@@ -116,7 +116,7 @@ static void dump(const nx_json* json, char* out, char** end, int indent) {
       *out++='"';
       break;
     case NX_JSON_INTEGER:
-      out+=sprintf(out, "%ld", json->int_value);
+      out+=sprintf(out, "%lld", json->int_value);
       break;
     case NX_JSON_DOUBLE:
       out+=sprintf(out, "%le", json->dbl_value);
