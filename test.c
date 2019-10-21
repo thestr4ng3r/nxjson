@@ -88,8 +88,8 @@ static void dump(const nx_json* json, char* out, char** end, int indent) {
       *out++='{';
       *out++='\n';
       {
-        nx_json* js=json->child;
-        for (js=json->child; js; js=js->next) {
+        nx_json* js=json->children.first;
+        for (js=json->children.first; js; js=js->next) {
           dump(js, out, &out, indent+2);
         }
       }
@@ -100,8 +100,8 @@ static void dump(const nx_json* json, char* out, char** end, int indent) {
       *out++='[';
       *out++='\n';
       {
-        nx_json* js=json->child;
-        for (js=json->child; js; js=js->next) {
+        nx_json* js=json->children.first;
+        for (js=json->children.first; js; js=js->next) {
           dump(js, out, &out, indent+2);
         }
       }
@@ -115,13 +115,13 @@ static void dump(const nx_json* json, char* out, char** end, int indent) {
       *out++='"';
       break;
     case NX_JSON_INTEGER:
-      out+=sprintf(out, "%lld", json->int_value);
+      out+=sprintf(out, "%lld", json->num.int_value);
       break;
     case NX_JSON_DOUBLE:
-      out+=sprintf(out, "%le", json->dbl_value);
+      out+=sprintf(out, "%le", json->num.dbl_value);
       break;
     case NX_JSON_BOOL:
-      *out++=json->int_value?'T':'F';
+      *out++=json->num.int_value?'T':'F';
       break;
     default:
       strcpy(out, "????");

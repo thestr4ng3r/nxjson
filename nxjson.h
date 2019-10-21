@@ -38,13 +38,19 @@ typedef enum nx_json_type {
 typedef struct nx_json {
   nx_json_type type;       // type of json node, see above
   const char* key;         // key of the property; for object's children only
-  const char* text_value;  // text value of STRING node
-  long long int_value;     // the value of INTEGER or BOOL node
-  double dbl_value;        // the value of DOUBLE node
-  int length;              // number of children of OBJECT or ARRAY
-  struct nx_json* child;   // points to first child
+  union {
+    const char* text_value;  // text value of STRING node
+	struct {
+      long long int_value;     // the value of INTEGER or BOOL node
+      double dbl_value;        // the value of DOUBLE node
+	} num;
+    struct { // children of OBJECT or ARRAY
+      int length;
+      struct nx_json* first;
+      struct nx_json* last;
+    } children;
+  };
   struct nx_json* next;    // points to next child
-  struct nx_json* last_child;
 } nx_json;
 
 typedef int (*nx_json_unicode_encoder)(unsigned int codepoint, char* p, char** endp);
