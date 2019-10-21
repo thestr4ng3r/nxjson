@@ -3,7 +3,7 @@ NXJSON
 
 Very small JSON parser written in C.
 
-##Features
+## Features
 
 - Parses JSON from null-terminated string
 - Easy to use tree traversal API
@@ -140,10 +140,10 @@ C API:
       nx_json_free(json);
     }
 
-##License
+## License
 
 LGPL v3
 
-##Copyright
+## Copyright
 
 Copyright (c) 2013 Yaroslav Stavnichiy <yarosla@gmail.com>
