@@ -1,3 +1,0 @@
-^nxjson$
-^tests/.*\.result$
-^nxjson\.sublime-(project|workspace)$

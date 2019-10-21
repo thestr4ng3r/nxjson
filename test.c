@@ -20,7 +20,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <malloc.h>
 #include <assert.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -133,16 +132,19 @@ static void dump(const nx_json* json, char* out, char** end, int indent) {
   *end=out;
 }
 
+#define FMT_PASSED "\x1b[32m[%03d] PASSED\x1b[0m\n"
+#define FMT_FAILED "\x1b[31m[%03d] FAILED\x1b[0m\n"
+
 static int run_test(int test_number, char* input, const char* expected_output) {
   int input_length=strlen(input);
   const nx_json* json=nx_json_parse_utf8(input);
   if (!json) {
     if (!expected_output) {
-      printf("[%03d] PASSED\n", test_number);
+      printf(FMT_PASSED, test_number);
       return 1;
     }
     else {
-      printf("[%03d] FAILED\n", test_number);
+      printf(FMT_FAILED, test_number);
       return 0;
     }
   }
@@ -157,17 +159,17 @@ static int run_test(int test_number, char* input, const char* expected_output) {
   save_file(fname, buf);
 
   if (!expected_output) {
-    printf("[%03d] FAILED\n", test_number);
+    printf(FMT_FAILED, test_number);
     free(buf);
     return 0;
   }
   if (!strcmp(buf, expected_output)) {
-    printf("[%03d] PASSED\n", test_number);
+    printf(FMT_PASSED, test_number);
     free(buf);
     return 1;
   }
   else {
-    printf("[%03d] FAILED\n", test_number);
+    printf(FMT_FAILED, test_number);
     free(buf);
     return 0;
   }
