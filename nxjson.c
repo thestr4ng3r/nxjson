@@ -66,6 +66,9 @@ static nx_json* create_json(nx_json_type type, const char* key, nx_json* parent)
 }
 
 void nx_json_free(const nx_json* js) {
+  if (!js) {
+    return;
+  }
   if (js->type == NX_JSON_OBJECT || js->type == NX_JSON_ARRAY) {
     nx_json* p=js->children.first;
     nx_json* p1;
