@@ -24,6 +24,15 @@
 extern "C" {
 #endif
 
+#ifndef NXJSON_TYPE_U64
+#include <stdint.h>
+typedef uint64_t nxjson_u64;
+#endif
+
+#ifndef NXJSON_TYPE_S64
+#include <stdint.h>
+typedef uint64_t nxjson_s64;
+#endif
 
 typedef enum nx_json_type {
   NX_JSON_NULL,    // this is null value
@@ -40,10 +49,13 @@ typedef struct nx_json {
   const char* key;         // key of the property; for object's children only
   union {
     const char* text_value;  // text value of STRING node
-	struct {
-      long long int_value;     // the value of INTEGER or BOOL node
-      double dbl_value;        // the value of DOUBLE node
-	} num;
+    struct {
+      union {
+        nxjson_u64 u_value;    // the value of INTEGER or BOOL node
+        nxjson_s64 s_value;
+      };
+      double dbl_value;      // the value of DOUBLE node
+    } num;
     struct { // children of OBJECT or ARRAY
       int length;
       struct nx_json* first;
