@@ -47,8 +47,6 @@ extern "C" {
 
 #define IS_WHITESPACE(c) ((unsigned char)(c)<=(unsigned char)' ')
 
-static const nx_json dummy = {NX_JSON_NULL};
-
 static nx_json *create_json(nx_json_type type, const char *key, nx_json *parent) {
 	nx_json *js = NX_JSON_CALLOC();
 	assert(js);
@@ -385,21 +383,19 @@ const nx_json *nx_json_parse(char *text, nx_json_unicode_encoder encoder) {
 }
 
 const nx_json *nx_json_get(const nx_json *json, const char *key) {
-	if (!json || !key) return &dummy; // never return null
 	nx_json *js;
 	for (js = json->children.first; js; js = js->next) {
 		if (js->key && !strcmp (js->key, key)) return js;
 	}
-	return &dummy; // never return null
+	return NULL;
 }
 
 const nx_json *nx_json_item(const nx_json *json, int idx) {
-	if (!json) return &dummy; // never return null
 	nx_json *js;
 	for (js = json->children.first; js; js = js->next) {
 		if (!idx--) return js;
 	}
-	return &dummy; // never return null
+	return NULL;
 }
 
 
