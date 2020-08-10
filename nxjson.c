@@ -281,6 +281,7 @@ static char* parse_value(nx_json* parent, const char* key, char* p, nx_json_unic
         {
           js=create_json(NX_JSON_INTEGER, key, parent);
           char* pe;
+          errno = 0;
           js->int_value=strtoll(p, &pe, 0);
           if (pe==p || errno==ERANGE) {
             NX_JSON_REPORT_ERROR("invalid number", p);
@@ -288,6 +289,7 @@ static char* parse_value(nx_json* parent, const char* key, char* p, nx_json_unic
           }
           if (*pe=='.' || *pe=='e' || *pe=='E') { // double value
             js->type=NX_JSON_DOUBLE;
+            errno = 0;
             js->dbl_value=strtod(p, &pe);
             if (pe==p || errno==ERANGE) {
               NX_JSON_REPORT_ERROR("invalid number", p);
