@@ -1,5 +1,2 @@
-nxjson
-nxjson.dSYM
-tests/*.result
-compile_commands.json
-vgcore.*
+[B|b]uild
+[T|t]esting
