@@ -6,9 +6,9 @@ set(INSTALL_BIN_DIR     bin     CACHE PATH "Installation directory for executabl
 set(INSTALL_INCLUDE_DIR include CACHE PATH "Installation directory for header files")
 
 if(WIN32 AND NOT CYGWIN)
-    set(DEF_INSTALL_CMAKE_DIR CMake)
+    set(DEF_INSTALL_CMAKE_DIR cmake)
 else()
-    set(DEF_INSTALL_CMAKE_DIR lib/CMake/FooBar)
+    set(DEF_INSTALL_CMAKE_DIR lib/cmake/nxjson)
 endif()
 
 set(INSTALL_CMAKE_DIR ${DEF_INSTALL_CMAKE_DIR} CACHE PATH "Installation directory for CMake files")
@@ -48,5 +48,6 @@ configure_file(nxjsonConfig.cmake.in "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTO
 install(FILES "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/nxjsonConfig.cmake" DESTINATION "${INSTALL_CMAKE_DIR}" COMPONENT dev)
 
 set_target_properties(nxjson PROPERTIES PUBLIC_HEADER "nxjson.h")
-install(TARGETS nxjson EXPORT nxjsonTargets RUNTIME DESTINATION "${INSTALL_BIN_DIR}" COMPONENT bin LIBRARY DESTINATION "${INSTALL_LIB_DIR}" COMPONENT shlib PUBLIC_HEADER DESTINATION "${INSTALL_INCLUDE_DIR}/nxjson" COMPONENT dev)
+install(TARGETS nxjson
+EXPORT nxjsonTargets RUNTIME DESTINATION "${INSTALL_BIN_DIR}" COMPONENT bin ARCHIVE DESTINATION "${INSTALL_LIB_DIR}" LIBRARY DESTINATION "${INSTALL_LIB_DIR}" COMPONENT shlib PUBLIC_HEADER DESTINATION "${INSTALL_INCLUDE_DIR}/nxjson" COMPONENT dev)
 install(EXPORT nxjsonTargets DESTINATION "${INSTALL_CMAKE_DIR}" COMPONENT dev)
