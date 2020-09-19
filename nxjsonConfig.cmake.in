@@ -1,0 +1,8 @@
+get_filename_component(NXJSON_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+set(NXJSON_INCLUDE_DIRS "@CONF_INCLUDE_DIRS@")
+
+if(NOT TARGET nxjson AND NOT NXJSON_BINARY_DIR)
+  include("${NXJSON_CMAKE_DIR}/nxjsonTargets.cmake")
+endif()
+
+set(NXJSON_LIBRARIES nxjson)
